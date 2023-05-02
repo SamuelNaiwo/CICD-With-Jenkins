@@ -15,7 +15,7 @@
 
 ## What is CI?
 
-- 
+- The practice of automating the integration of code changes from multiple contributors into a single software project.
 
 ## Difference between CD & CDE?
 
