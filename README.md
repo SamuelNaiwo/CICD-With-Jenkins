@@ -84,6 +84,7 @@ What Continuous Deployment (CDE) Does and Doesn't Do.
     ```
 17. Copy your private ssh key and open Jenkins again. Then, paste your private ssh key in the box.
 17.	Click add at the bottom to add ssh key.
+18. Sele
 18.	Change branches to build name from master to `main` as this is the branch on GitHub.
 19.	Under `Build Environment` select `Provide Node & npm bin/ folder to PATH`. We had one created for us already.
 20.	Under Build click `Add build step` and select `Execute shell`.
