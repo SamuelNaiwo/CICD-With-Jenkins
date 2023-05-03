@@ -64,14 +64,23 @@ What Continuous Deployment (CDE) Does and Doesn't Do.
 5. Click OK to create. 
 6. In the `Description` box write a few lines to explain what this job is for. I entered `Building a CI for automating testing`.
 7. Select `Discard old builds` box and set max number of builds to `3`
+
+    ![Alt text](img/Discard%20old%20builds.png)
+
 8. Select `GitHub project` and in the project URL and paste your GitHub repo URL using HTTPS.
     - Navigate to your GitHub repo.
 
     - Click `<> Code` in the green box.
     - Select HTTPS and copy the URL.
+
+    ![Alt text](img/GitHub%20HTTPS%20URL.png)
+
     - Paste the URL and paste on Jenkins.
 
 9. Under Office 365 Connecter, select `restrict where this project can be run`. We had one set up already named `sparta-ubuntu-node`
+
+    ![Alt text](img/Office%20365%20connector.png)
+
 10. Under source code management select git.
 11. Copy your SSH URL from your GitHub repo and paste it into the `Repository URL` box.
 12. Click add key and select Jenkins.
@@ -94,3 +103,11 @@ What Continuous Deployment (CDE) Does and Doesn't Do.
     npm install
     npm test
     ```
+22. Click `Build Now` and wait for the build history to update. When the new build shows up, click the dropdown as show below to access `Console Output` and click it.
+    
+    ![Alt text](img/build_now.png)
+
+23. Once you've clicked it, it will show everything that has run in the background and we can check to see if all tests have passed.
+
+    ![Alt text](img/success.png)
+
