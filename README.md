@@ -58,9 +58,12 @@ What Continuous Deployment (CDE) Does and Doesn't Do.
 
 ## Set Up Jenkins
 
-1. Open Jenkins in your browser.
+1. Open Jenkins in your browser and log in.
 
 2. Click `New Item` on the left hand side to create a new job.
+
+    ![Alt text](img/jen_new_item.png)
+
 3. Enter the name you would like to name your item. I used `samuel-CI` since we are using it for continuous intergration (CI)
 4. Select `Freestyle project`
 5. Click OK to create. 
@@ -99,6 +102,9 @@ What Continuous Deployment (CDE) Does and Doesn't Do.
 18.	Change branches to build name from master to `main` as this is the branch on GitHub.
 19.	Under `Build Environment` select `Provide Node & npm bin/ folder to PATH`. We had one created for us already.
 20.	Under Build click `Add build step` and select `Execute shell`.
+
+    ![Alt text](img/build_step.png)
+
 21. Enter commands to navigate to where your app is saved and run tests.
     ```
     cd app
