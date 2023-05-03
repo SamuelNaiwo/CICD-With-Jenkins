@@ -126,11 +126,14 @@ What Continuous Deployment (CDE) Does
 6.	Click `Create webhook`
 7.	Open Jenkins in browser and find your job you created. Hover over your job and you will see an arrow next to it. Click the arrow and click `configure`.
 8.	Scroll down to `Build triggers` and select `GitHub hook trigger`. Save the changes after.
-9.	Open GitHub and make changes to your README.md on GitHub where you previously made the webhook.
-10.	Name the commit change and commit the changes.
-11.	Check Jenkins to see if it builds automatically.
 
-## Check Connection From Local Machine To Jenkins With Webhook
+## Test Connection From GitHub To Jenkins
+
+1.	Open GitHub and make changes to your README.md on GitHub where you previously made the webhook.
+2.	Name the commit change and commit the changes.
+3.	Check Jenkins to see if it builds automatically.
+
+## Check Connection From Local Machine To Jenkins
 
 1.	Open your IDE and navigate to folder where you made changes on GitHub.
 
