@@ -47,8 +47,8 @@ What Continuous Deployment (CDE) Does
 7. Navigate to your GitHub repo and click on the settings tab.
 8. Click deploy keys under security.
 9. Click add deploy key.
-10. Title your new key and paste your ssh key into the box below.
-11. Click add key in the green box and you should see your new kwy.
+10. Title your new key and paste your ssh key into the box below. Also, select `allow write access`.
+11. Click add key in the green box and you should see your new key.
 
 ## Set Up Jenkins
 
@@ -133,7 +133,7 @@ What Continuous Deployment (CDE) Does
 2.	Name the commit change and commit the changes.
 3.	Check Jenkins to see if it builds automatically.
 
-## Check Connection From Local Machine To Jenkins
+## Test Connection From Local Machine To Jenkins
 
 1.	Open your IDE and navigate to folder where you made changes on GitHub.
 
@@ -141,3 +141,96 @@ What Continuous Deployment (CDE) Does
 3.	Make a change to your README.md file.
 4.	Add the changes with `git add`. Commit the changes with `git commit -m “”`. Push the changes to GitHub with `git push <origin> <branch>`.
 5.	Open Jenkins and it should be built automatically for you.
+
+# Merge Code From Dev To Main Branch Through Jenkins
+
+1. Open Jenkins in your browser and log in.
+
+2. Click `New Item` on the left hand side to create a new job.
+
+    ![Alt text](img/jen_new_item.png)
+
+3. Enter the name you would like to name your item. I used `samuel-CI-merge` since we are using it for continuous intergration (CI)
+4. Select `Freestyle project`
+5. Click OK to create. 
+6. In the `Description` box write a few lines to explain what this job is for. I entered `Merging dev branch with main branch`.
+7. Select `Discard old builds` box and set max number of builds to `3`
+
+    ![Alt text](img/Discard%20old%20builds.png)
+8. Under source code management select git.
+9. Copy your SSH URL from your GitHub repo and paste it into the `Repository URL` box.
+10. Select your SSh key you created alrrady.
+11. Change `Branches to build` name from master to `dev` as this is the branch on GitHub.
+12. For `Additional behaviours` click add.
+    - Name of repository = origin
+    - Branch to merge to = main
+    - Merge strategy = default
+    - Fast-forward-ode = --ff
+13. Under `Build Environment` select `Provide Node & npm bin/ folder to PATH`. We had one created for us already.
+14.	Under Build click `Add build step` and select `Execute shell`.
+
+    ![Alt text](img/build_step.png)
+
+15. Enter commands to navigate to where your app is saved and run tests.
+    ```
+    cd app
+    npm install
+    npm test
+    ```
+16. Under `Post-build actions` click `Add post-build action` and select `Git Publisher`.
+17. Click save to make changes.
+
+## Test To See If Job Works
+
+1. Open your IDE and change directory to the same as your repo.
+
+2. Create a new branch with the following command. `git branch dev`.
+3. Change branches to your new one you created. `git checkout dev`.
+4. Make changes to your code.
+5. Add the changes with `git add`. Commit the changes with `git commit -m “”`. Push the changes to GitHub with `git push <origin> <branch>`.
+
+# Push Code To Production EC2 Instance
+
+## Launch EC2 Instance
+
+1. Open AWS in browser and log in.
+
+2. If you have an AMI set up already, launch a new instance from there.
+3. For instance type select `t2.micro`.
+4. Select a key pair you have been using previously or create a new one.
+5. For network setting, make sure to allow inbound rules for ssh for your own i.p address and Jenkins i.p address. Also open port 3000 for nginx and port 80 for HTTP.
+6. Click Launch instance.
+
+## Create New Job For EC2 Instance
+
+1. Open Jenkins in your browser and log in.
+
+2. Click `New Item` on the left hand side to create a new job.
+
+    ![Alt text](img/jen_new_item.png)
+3. Enter the name you would like to for your new job.
+3. Select `Freestyle project`
+4. If you have already created a item, you can copy that item to save you time as seen below. If not, then skip this part. (I had one created already)
+
+
+
+5. Click `OK` to create a new item.
+6. Make sure under `Source Code Management` tab that Branches to build is set to `main`
+7. Under `Build Environment` select SSH agent and select your specific credential that is linked to your .pem file.
+8. Under `Build` click `Add build step` and select `Execute shell`.
+9. Enter the following commands below:
+
+```
+scp -v -r -o StrictHostKeyChecking=no app/ ubuntu@<public-ip-aws>:/home/ubuntu/
+ssh -A -o StrictHostKeyChecking=no ubuntu@<public-ip-aws> <<EOF
+# sudo apt install clear
+
+cd app
+
+# sudo npm install pm2 -g
+# pm2 kill
+nohup node app.js > /dev/null 2>&1 &
+```
+
+10. Click save to save your changes.
+11. Click build to test your job.
