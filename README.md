@@ -198,7 +198,12 @@ What Continuous Deployment (CDE) Does
 2. If you have an AMI set up already, launch a new instance from there.
 3. For instance type select `t2.micro`.
 4. Select a key pair you have been using previously or create a new one.
-5. For network setting, make sure to allow inbound rules for ssh for your own i.p address and Jenkins i.p address. Also open port 3000 for nginx and port 80 for HTTP.
+5. For network setting, when creating a new security group make sure to allow inbound rules for:
+    - SSH port 22 for your IP
+    - SSH port 22 for Jenkins IP
+    - HTTP port 80 for 0.0.0.0
+    - Custom TCP for port 3000 with 0.0.0.0
+    - Custom TCP for port 8080 (Jenkins port) with 0.0.0.0
 6. Click Launch instance.
 
 ## Create New Job For EC2 Instance
