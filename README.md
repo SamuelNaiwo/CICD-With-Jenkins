@@ -113,3 +113,28 @@ What Continuous Deployment (CDE) Does
 
     ![Alt text](img/success.png)
 
+# Automate Build Proccess On Jenkins With Webhook
+
+## Create Webhook On Github
+
+1.	Open git hub and navigate to your repository where your app is stored.
+
+2.	Click on the settings tab.
+3.	Click on webhook and click add webhook
+4.	Copy IP address from Jenkins and paste into payload url `http://35.178.11.196:8080/github-webhook/`. We used `github-webhook` at the end to show to connection we wanted to use.
+5.	Select `application/json`
+6.	Click `Create webhook`
+7.	Open Jenkins in browser and find your job you created. Hover over your job and you will see an arrow next to it. Click the arrow and click `configure`.
+8.	Scroll down to `Build triggers` and select `GitHub hook trigger`. Save the changes after.
+9.	Open GitHub and make changes to your README.md on GitHub where you previously made the webhook.
+10.	Name the commit change and commit the changes.
+11.	Check Jenkins to see if it builds automatically.
+
+## Check Connection From Local Machine To Jenkins With Webhook
+
+1.	Open your IDE and navigate to folder where you made changes on GitHub.
+
+2.	Pull the changes you made on GitHub using `git pull <origin> <branch>`
+3.	Make a change to your README.md file.
+4.	Add the changes with `git add`. Commit the changes with `git commit -m “”`. Push the changes to GitHub with `git push <origin> <branch>`.
+5.	Open Jenkins and it should be built automatically for you.
