@@ -1,5 +1,7 @@
 # CI/CD With Jenkins
 
+![Alt text](img/CICD_CICD.webp)
+
 ## What is Jenkins?
 
 - An open source automation server which enables developers around the world to reliably build, test, and deploy their software.
