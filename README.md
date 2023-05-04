@@ -239,3 +239,57 @@ nohup node app.js > /dev/null 2>&1 &
 
 10. Click save to save your changes.
 11. Click build to test your job.
+
+# Set Up Master Node For End to End Pipeline
+
+1. Open AWS and launch a new instance.
+
+2. Name your instance to your preference.
+3. Make sure you select t.2 mediumn for instance type.
+4. Make sure you have the following ports open for your security group open for your inbound rules.
+    - SSH port 22 for your IP
+    - SSH port 22 for Jenkins IP
+    - HTTP port 80 for 0.0.0.0
+    - HTTPS port 443 for 0.0.0.0
+    - Custom TCP for port 3000 with 0.0.0.0
+    - Custom TCP for port 8080 (Jenkins port) with 0.0.0.0
+5. Launch your instance.
+6. Open your terminal and SSH into your instance.
+7. We need install Java onto our instance so we use the following commands:
+    ```
+    sudo apt update -y
+    sudo apt upgrade -y
+    sudo apt install default-jdk -y
+    ```
+8. We then need to download and install Jenkins onto our instance:
+    ```
+    wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
+    sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+    sudo apt-get update
+    sudo apt-get install jenkins
+    sudo systemctl start jenkins
+    sudo systemctl enable jenkins
+    ```
+9. By default, Jenkins runs on port 8080, so let’s open that port using ufw: `sudo ufw allow 8080`
+10. Check ufw’s status to confirm the new rules: `sudo ufw status`
+    - NOTE: If the firewall is inactive, the following commands will allow OpenSSH and enable the firewall: 
+    ```
+    sudo ufw allow OpenSSH
+    sudo ufw enable
+    ```
+11. To set up your installation, visit Jenkins on its default port, 8080, using your IP address: `http://instance_public_ip:8080`
+12. In the terminal window use the cat command to display your password: `sudo cat /var/lib/jenkins/secrets/initialAdminPassword`
+13. On the next page select `Install suggested plugins` option.
+14. After this you will create your username and password.
+15. Confirm your Jenkins URL is correct and click save and finish.
+16. Click on `Manage Jenkins` on the left side of the page. Click on available plugins and download the following plugins:
+    - Amazon EC2 Plugin
+    - NodeJS Plugin
+    - Office 365 Connector
+    - SSH Agent Plugin
+17. Once you install those plugins, clcik on `Manage Jenkins` again and click `Global Tool Configuration`.
+18. Scroll down to NodeJS and click Add NodeJS.
+19. Name your NodeJS. Make `Instal automatically` boxed is ticked.
+20. Select the version of NodeJs you would like to install.
+21. Enter the npm packge which is required. For me it was `sudo npm install pm2 -g`.
+22. Save those changes and you are ready to create your first job.
